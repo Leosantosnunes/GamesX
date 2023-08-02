@@ -14,10 +14,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.util.Date;
 
 public class CoverPage extends Application {
+	
+	
 	
 	TextField playerID;
 	TextField playerPassword;
@@ -33,7 +36,7 @@ public class CoverPage extends Application {
 		pane.setHgap(5.5);
 		pane.setVgap(5.5);
 		
-		pane.add(new Label("Insert your ID to start: "), 0, 0);
+		pane.add(new Label("Insert your ID: "), 0, 0);
 		playerID = new TextField();
 		pane.add(playerID, 1, 0);
 		
@@ -51,23 +54,22 @@ public class CoverPage extends Application {
         PreparedStatement statement = DbConn.connection.prepareStatement(sql);
         ResultSet dbresultSet = statement.executeQuery();
 		
-		TableView tableView = new TableView();
-		VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(9, 0, 0, 9));
+		TableView tableView = new TableView();		
 		
 		while (dbresultSet.next()) {
 			
             String gameTitle = dbresultSet.getString("GAMETITLE");
             String gameDeveloper = dbresultSet.getString("GAMEDEVELOPER");
             Date gameReleaseDate = dbresultSet.getDate("GAMERELEASEDATE");
-            Double gamePrice = dbresultSet.getDouble("GAMEPRICE");
+            Double gamePrice = dbresultSet.getDouble("GAMEPRICE");            
+            
             
             Game game = new Game(gameTitle, gameDeveloper, gameReleaseDate, gamePrice);
             tableView.getItems().add(game);}		
 		
         TableColumn<Game, String> gameTitleCol = new TableColumn<>("Game Title");
         gameTitleCol.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getGameTitle()));
+        
         
         TableColumn<Game, String> gameDeveloperCol = new TableColumn<>("Game Developer");
         gameDeveloperCol.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getGameDeveloper()));
@@ -77,9 +79,27 @@ public class CoverPage extends Application {
         
         TableColumn<Game, Double> gamePriceCol = new TableColumn<>("Price");
         gamePriceCol.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getGamePrice()));
+                     
+        TableColumn<Game, Button> btnPayment = new TableColumn<>("Buy");
+        btnPayment.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getBtnPayment()));
         
-        tableView.getColumns().addAll(gameTitleCol, gameDeveloperCol,releaseDateCol, gamePriceCol);
-
+        pane.setStyle(" -fx-background-color: linear-gradient(to bottom, #1dbbdd44, #93f9b944);");
+        
+        gameTitleCol.setStyle("-fx-alignment: CENTER;");
+        gameDeveloperCol.setStyle("-fx-alignment: CENTER;");
+        releaseDateCol.setStyle("-fx-alignment: CENTER;");
+        gamePriceCol.setStyle("-fx-alignment: CENTER;");
+        btnPayment.setStyle("-fx-alignment: CENTER;"); 
+        
+        
+        gameTitleCol.setPrefWidth(90);
+        gameDeveloperCol.setPrefWidth(120);
+        releaseDateCol.setPrefWidth(100);
+        gamePriceCol.setPrefWidth(55);
+        btnPayment.setPrefWidth(70);
+        tableView.setFixedCellSize(33);        
+        tableView.getColumns().addAll(gameTitleCol, gameDeveloperCol,releaseDateCol, gamePriceCol,btnPayment);
+        
         pane.add(tableView,0,4,4,1);
         
         dbresultSet.close();
@@ -134,3 +154,5 @@ public class CoverPage extends Application {
 	}
 
 }
+
+

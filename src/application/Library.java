@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -76,10 +77,10 @@ public class Library {
         this.gameTitle = gameTitle;
     }
     
-    public VBox getLayout(int gamerID) {
+    public Pane getLayout(int gamerID) {
         try {
             // Create the root layout (VBox) for the LibraryPage
-            VBox rootLayout = new VBox();
+            Pane rootLayout = new Pane();
             
             String sqlName = "select FIRSTNAME from GAMER WHERE GAMER_ID = ?";
             PreparedStatement statementName = DbConn.connection.prepareStatement(sqlName);
@@ -124,8 +125,7 @@ public class Library {
             playTimeCol.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getPlayTime()));
 
             tableView.getColumns().addAll(gameTitleCol, playTimeCol);
-
-            rootLayout.getChildren().add(tableView);
+            
 
             dbresultSet.close();
             statement.close();
@@ -190,8 +190,9 @@ public class Library {
 
             // Create both TableViews side by side in an HBox
             HBox hbox = new HBox(gamesVBox, friendsVBox);
-            HBox.setHgrow(gamesVBox, Priority.ALWAYS); // Allow gamesVBox to grow horizontally
+            HBox.setHgrow(gamesVBox, Priority.ALWAYS); // Allow gamesVBox to grow horizontally            
             rootLayout.getChildren().addAll(hbox);
+            hbox.relocate(0,40);
             
 
             return rootLayout;
@@ -200,7 +201,7 @@ public class Library {
         }
 
         
-        return new VBox();
+        return new Pane();
     }
 
 }

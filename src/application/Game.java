@@ -2,12 +2,15 @@ package application;
 
 import java.util.Date;
 
+import javafx.scene.control.Button;
+
 public class Game {
 	private int gameID;
     private String gameTitle;
     private String gameDeveloper;
     private Date gameReleaseDate;
     private double gamePrice;
+    private Button btnPayment;
 
     // Constructor
     public Game(int gameID, String gameTitle, String gameDeveloper, Date gameReleaseDate, double gamePrice) {
@@ -16,6 +19,7 @@ public class Game {
         this.gameDeveloper = gameDeveloper;
         this.gameReleaseDate = gameReleaseDate;
         this.gamePrice = gamePrice;
+        this.btnPayment = new Button("Buy");
     }
     
     public Game(String gameTitle) {        
@@ -27,6 +31,7 @@ public class Game {
         this.gameDeveloper = gameDeveloper;
         this.gameReleaseDate = gameReleaseDate;
         this.gamePrice = gamePrice;
+        this.btnPayment = new Button("Buy");
     }
 
     // Getter and Setter methods for each attribute
@@ -67,7 +72,16 @@ public class Game {
     }
 
     public void setGamePrice(double gamePrice) {
-        this.gamePrice = gamePrice;
+        this.gamePrice = gamePrice;   
+        
+    }
+    
+    public Button getBtnPayment() {
+        return btnPayment;
+    }
+
+    public void setBtnPayment(Button btnPayment) {
+        this.btnPayment = btnPayment;
     }
 
 }
